@@ -20,6 +20,7 @@ public class TryUpdateBookCommandHandler(
             request.Title,
             request.Author,
             request.Description,
-            request.ReleaseDate), ct);
+            request.ReleaseDate,
+            request.User), ct);
     }
 }

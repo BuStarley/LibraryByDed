@@ -20,7 +20,8 @@ public class CreateBookCommandHandler(
                 request.Title,
                 request.Author,
                 request.Description,
-                request.ReleaseDate);
+                request.ReleaseDate,
+                request.User);
         await repository.AddAsync(book, ct);
         return book.Id;
     }

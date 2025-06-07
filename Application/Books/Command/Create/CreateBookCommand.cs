@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Domain.Entity;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,4 +13,5 @@ public record CreateBookCommand(
     string Title,
     string Author,
     string Description,
-    DateTime ReleaseDate) : IRequest<Guid>;
+    DateTime ReleaseDate,
+    User User) : IRequest<Guid>;

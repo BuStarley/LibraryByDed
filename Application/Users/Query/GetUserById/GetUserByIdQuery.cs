@@ -1,4 +1,5 @@
 ﻿using Application.Dto;
+using Domain.Entity;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Books.Query.GetById;
+namespace Application.Users.Query.GetUserById;
 
-public record GetBookByIdQuery(Guid Id) : IRequest<BookDto>;
+public record GetUserByIdQuery(Guid Id) : IRequest<User>;

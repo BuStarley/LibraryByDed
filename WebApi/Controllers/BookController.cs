@@ -1,7 +1,6 @@
 ﻿using Application.Books.Command.Create;
 using Application.Books.Command.Delete;
 using Application.Books.Command.Update;
-using Application.Books.Dtos;
 using Application.Books.Query;
 using Application.Books.Query.GetById;
 using Application.Interfaces;
