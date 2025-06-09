@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\CreateBook.cshtml" />
+    <Content Remove="Views\Profile\Login.cshtml" />
+    <Content Remove="Views\Profile\Register.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Profile\Register.cshtml" />
+    <None Include="Views\Profile\Login.cshtml" />
     <None Include="Views\Publish\Index.cshtml" />
   </ItemGroup>
 

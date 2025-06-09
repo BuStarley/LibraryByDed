@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Application.Books.Query.GetBooksByPage;
 using Application.Interfaces;
 using Domain.Entity;
@@ -13,6 +14,33 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Profile/Login";
+    options.AccessDeniedPath = "/Error";
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true, // Проверять издателя токена
+            ValidateAudience = true, // Проверять получателя токена
+            ValidateLifetime = true, // Проверять срок действия
+            ValidateIssuerSigningKey = true, // Проверять подпись
+            ValidIssuer = builder.Configuration["Jwt:Issuer"], // Из appsettings.json
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+        };
+    });
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);   
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -43,6 +71,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
