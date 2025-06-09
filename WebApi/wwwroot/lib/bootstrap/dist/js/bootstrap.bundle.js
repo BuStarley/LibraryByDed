@@ -578,7 +578,7 @@
           bubbles,
           cancelable: true
         });
-      } // merge custom information in our event
+      }
 
 
       if (typeof args !== 'undefined') {

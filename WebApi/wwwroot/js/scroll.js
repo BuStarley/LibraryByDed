@@ -23,12 +23,15 @@
 
             const data = await response.json();
 
-            if (data.Books.length === 0) {
+            // 🔹 Исправлено: проверяем data.books или data.Books в зависимости от API
+            const books = data.books || data.Books || []; // Если оба варианта возможны
+
+            if (books.length === 0) {
                 hasMore = false;
                 return;
             }
 
-            data.books.forEach(book => {
+            books.forEach(book => {
                 const bookElement = document.createElement('div');
                 bookElement.className = 'book-card';
                 bookElement.innerHTML = `
@@ -59,4 +62,4 @@
     });
 
     loadBooks();
-})
+});
