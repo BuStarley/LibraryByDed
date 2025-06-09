@@ -2,6 +2,7 @@
 using Application.Books.Command.Delete;
 using Application.Books.Command.Update;
 using Application.Books.Query;
+using Application.Books.Query.GetBooksByPage;
 using Application.Books.Query.GetById;
 using Application.Interfaces;
 using MediatR;
@@ -13,6 +14,26 @@ namespace WebApi.Controllers;
 [Route("api/books")]
 public class BookController(IMediator mediator) : Controller
 {
+    [HttpGet("page")]
+    public async Task<IActionResult> GetBooksByPage(
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
+    {
+        try
+        {
+            var (books, totalCount) = await mediator.Send(new GetBooksByPageQuery(page, pageSize));
+
+            return Ok(new
+            {
+                Books = books,
+                TotalCount = totalCount
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
 
     [HttpPost]
     public async Task<IActionResult> CreateBook(CreateBookCommand command)
@@ -21,7 +42,7 @@ public class BookController(IMediator mediator) : Controller
         return Ok(bookId);
     }
 
-    [HttpPost]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBook(Guid id)
     {
         var command = new DeleteBookCommand(id);
@@ -29,7 +50,7 @@ public class BookController(IMediator mediator) : Controller
         return Ok(result);
     }
 
-    [HttpGet]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetBook(Guid id)
     {
         var query = new GetBookByIdQuery(id);
@@ -38,7 +59,7 @@ public class BookController(IMediator mediator) : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(TryUpdateBookCommand command) 
+    public async Task<IActionResult> UpdateBook([FromQuery] TryUpdateBookCommand command) 
     {
         var result = await mediator.Send(command);
         return Ok(result);

@@ -1,7 +1,6 @@
-﻿namespace Application
+﻿namespace Application;
+
+public interface IPasswordHasher
 {
-    public interface IPasswordHasher
-    {
-        string Hash(string password);
-    }
+    string Hash(string password);
 }
