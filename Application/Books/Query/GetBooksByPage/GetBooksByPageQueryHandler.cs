@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Dto;
+using Application.Interfaces;
+using AutoMapper;
 using Domain.Entity;
 using MediatR;
 using System;
@@ -10,10 +12,11 @@ using System.Threading.Tasks;
 namespace Application.Books.Query.GetBooksByPage;
 
 public class GetBooksByPageQueryHandler(
-    IBookRepository repository)
-    : IRequestHandler<GetBooksByPageQuery, (List<Book>, int)>
+    IBookRepository repository,
+    IMapper mapper)
+    : IRequestHandler<GetBooksByPageQuery, (List<BookDto>, int)>
 {
-    public async Task<(List<Book>, int)> Handle(
+    public async Task<(List<BookDto>, int)> Handle(
         GetBooksByPageQuery request, 
         CancellationToken ct)
     {
@@ -28,6 +31,14 @@ public class GetBooksByPageQueryHandler(
             .Take(request.PageSize)
             .ToList();
 
-        return (books, count);
+        var mapBooks = new List<BookDto>();
+
+        foreach (var book in books)
+        {
+            mapBooks.Add(mapper.Map<BookDto>(book));
+        }
+
+
+        return (mapBooks, count);
     }
 }

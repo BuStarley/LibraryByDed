@@ -18,7 +18,7 @@ public class RegisterUserCommandHandler(
             request.PhoneNumber,
             passwordHasher.Hash(request.Password));
 
-        await repository.AddAsync(user);
+        await repository.AddAsync(user, ct);
         return user.Id;
     }
 }

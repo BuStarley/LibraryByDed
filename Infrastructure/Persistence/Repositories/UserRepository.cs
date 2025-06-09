@@ -10,7 +10,17 @@ namespace Infrastructure.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    public Task AddAsync(User user)
+    public Task AddAsync(User user, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<User> GetByPhoneNumberAsync(string PhoneNumber, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateAsync(User user, CancellationToken ct)
     {
         throw new NotImplementedException();
     }

@@ -23,8 +23,7 @@
 
             const data = await response.json();
 
-            // 🔹 Исправлено: проверяем data.books или data.Books в зависимости от API
-            const books = data.books || data.Books || []; // Если оба варианта возможны
+            const books = data.books;
 
             if (books.length === 0) {
                 hasMore = false;
@@ -38,6 +37,8 @@
                     <div class="book-info">
                         <div class="book-title">${book.title}</div>
                         <div class="book-author">${book.author}</div>
+                        <div class="book-releaseDate">${book.releaseDate}</div>
+                        <div class="book-description">${book.description}</div>
                     </div>
                 `;
                 booksContainer.appendChild(bookElement);

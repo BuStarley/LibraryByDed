@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Books.Query.GetBooksByPage;
+namespace Application.Users.Query.GetUserByPhoneNumber;
 
-public record GetBooksByPageQuery(
-    int Page, 
-    int PageSize) : IRequest<(List<BookDto>, int)>;
+public record GetUserByPhoneNumberQuery(string PhoneNumber) : IRequest<UserDto>;
