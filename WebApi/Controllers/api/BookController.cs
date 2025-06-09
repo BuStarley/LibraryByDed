@@ -8,7 +8,7 @@ using Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers;
+namespace WebApi.Controllers.api;
 
 [ApiController]
 [Route("api/books")]
@@ -59,7 +59,7 @@ public class BookController(IMediator mediator) : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateBook([FromQuery] TryUpdateBookCommand command) 
+    public async Task<IActionResult> UpdateBook([FromQuery] TryUpdateBookCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(result);

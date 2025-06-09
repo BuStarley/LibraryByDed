@@ -1,22 +1,90 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --marble-white: #f5f0e6;
+    --papyrus: #e8ddc5;
+    --olive: #6b8e23;
+    --terracotta: #b36a5e;
+    --gold: #d4af37;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Cardo', serif;
+    background-color: var(--marble-white);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="black" stroke-width="2"/></svg>');
+    color: #333;
 }
+
+.navbar {
+    background: linear-gradient(to right, var(--olive), var(--terracotta)) !important;
+    border-bottom: 3px solid var(--gold) !important;
+}
+
+.navbar-brand, .nav-link {
+    font-family: 'Forum', cursive !important;
+    color: var(--marble-white) !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+    .nav-link:hover {
+        color: var(--gold) !important;
+    }
+
+.container {
+    background-color: var(--papyrus);
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    border: 1px solid #d4b483;
+}
+
+h1, h2, h3 {
+    font-family: 'Forum', cursive;
+    color: var(--olive);
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 0.3em;
+}
+
+.btn-primary {
+    background-color: var(--terracotta);
+    border-color: var(--olive);
+    font-family: 'Forum', cursive;
+}
+
+    .btn-primary:hover {
+        background-color: var(--olive);
+        border-color: var(--terracotta);
+    }
+
+footer {
+    background: linear-gradient(to right, var(--olive), var(--terracotta));
+    color: var(--marble-white);
+    font-family: 'Forum', cursive;
+}
+
+    footer a {
+        color: var(--gold);
+    }
+
+/* Стили для книг */
+.book-card {
+    background: white;
+    border: 1px solid var(--gold);
+    transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .book-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gold);
+    }
