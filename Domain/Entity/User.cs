@@ -20,6 +20,7 @@ public class User
     public DateTime? RefreshTokenExpiry { get; private set; }
     public IReadOnlyCollection<Book> FavoriteBooks => _favoriteBooks.AsReadOnly();
     public IReadOnlyCollection<Book> UploadedBooks => _uploadedBooks.AsReadOnly();
+    public bool IsActive { get; set; }
 
     private User() { }
 
@@ -38,7 +39,8 @@ public class User
             Id = Guid.NewGuid(),
             UserName = userName,
             PhoneNumber = phoneNumber,
-            PasswordHash = passwordHash
+            PasswordHash = passwordHash,
+            IsActive = true
         };
     }
 

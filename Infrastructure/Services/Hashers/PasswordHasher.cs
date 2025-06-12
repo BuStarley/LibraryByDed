@@ -16,6 +16,7 @@ public class PasswordHasher : IPasswordHasher
     private static readonly HashAlgorithmName _hashAlgorithmName 
         = HashAlgorithmName.SHA256;
     private const char Delimiter = ';';
+
     public string Hash(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
@@ -30,4 +31,7 @@ public class PasswordHasher : IPasswordHasher
             Convert.ToBase64String(salt),
             Convert.ToBase64String(hash));
     }
+
+    public bool Verify(string password, string passwordHash) =>
+        Hash(password) == passwordHash;
 }
