@@ -6,8 +6,17 @@ namespace WebApi.Controllers;
 
 public class HomeController(ILogger<HomeController> logger) : Controller
 {
-
     public IActionResult Index()
+    {
+        return View();
+    }
+
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    public IActionResult Register()
     {
         return View();
     }
