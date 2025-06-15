@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Dto;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,4 +11,4 @@ namespace Application.Users.Command.Register;
 public record RegisterUserCommand(
     string UserName,
     string PhoneNumber,
-    string Password) : IRequest<Guid>;
+    string Password) : IRequest<AuthenticationResult>;

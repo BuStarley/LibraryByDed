@@ -17,7 +17,7 @@ public class PasswordHasher : IPasswordHasher
         = HashAlgorithmName.SHA256;
     private const char Delimiter = ';';
 
-    public string Hash(string password)
+    public string GetHash(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
         var hash = Rfc2898DeriveBytes.Pbkdf2(
@@ -33,5 +33,5 @@ public class PasswordHasher : IPasswordHasher
     }
 
     public bool Verify(string password, string passwordHash) =>
-        Hash(password) == passwordHash;
+        GetHash(password) == passwordHash;
 }

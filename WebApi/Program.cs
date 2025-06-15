@@ -19,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddLogging();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Profile/Login";

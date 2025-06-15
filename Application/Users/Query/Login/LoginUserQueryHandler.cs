@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Dto;
+using Application.Exceptions;
+using Application.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +14,6 @@ namespace Application.Users.Query.Login;
 public class LoginUserQueryHandler(
     IUserRepository repository,
     IPasswordHasher hasher,
-    IJwtTokenService jwtTokenService,
     ILogger<LoginUserQueryHandler> logger)
     : IRequestHandler<LoginUserQuery, AuthenticationResult>
 {
@@ -25,36 +26,25 @@ public class LoginUserQueryHandler(
 
             if (user == null)
             {
-                logger.LogWarning("Login attempt for non-existent user: {PhoneNumber}", request.PhoneNumber);
-                throw new UnauthorizedAccessException("Invalid credentials");
-            }
-
-            if (!user.IsActive)
-            {
-                logger.LogWarning("Login attempt for inactive user: {UserId}", user.Id);
-                throw new UnauthorizedAccessException("Account is inactive");
+                var message = "There is no account with this phone number";
+                logger.LogTrace($"{message} number={request.PhoneNumber}");
+                throw new Exception(message);
             }
 
             if (!hasher.Verify(request.Password, user.PasswordHash))
             {
-                logger.LogWarning("Invalid password attempt for user: {UserId}", user.Id);
-                throw new UnauthorizedAccessException("Invalid credentials");
+                var message = "Incorrect password";
+                logger.LogWarning($"Incorrect password id={user.Id}");
+                throw new IncorrectPassword(message);
             }
 
-            var token = jwtTokenService.GenerateToken(user);
-            logger.LogInformation("User {UserId} logged in successfully", user.Id);
-
-            return new AuthenticationResult
-            {
-                Token = token,
-                ExpiresIn = jwtTokenService.GetTokenExpiry(),
-                UserId = user.Id
-            };
+            return new(user.Id, "");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error during login for {PhoneNumber}", request.PhoneNumber);
-            throw;
+            var message = "Connection problems";
+            logger.LogError(message);
+            throw new AuthenticationException(message); ;
         }
     }
 }

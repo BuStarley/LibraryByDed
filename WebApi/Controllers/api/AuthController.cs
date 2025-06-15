@@ -33,7 +33,7 @@ public class AuthController(IMediator mediator, ILogger logger) : Controller
             return Ok(new AuthResponse
             {
                 Success = true,
-                UserId = result,
+                UserId = result.UserId,
                 Message = "Регистрация успешна. Подтвердите номер телефона."
             });
         }

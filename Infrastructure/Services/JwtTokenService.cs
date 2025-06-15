@@ -15,6 +15,11 @@ namespace Infrastructure.Services;
 
 public class JwtTokenService(IConfiguration configuration) : IJwtTokenService
 {
+    public string GenerateRefreshToken()
+    {
+        throw new NotImplementedException();
+    }
+
     string IJwtTokenService.GenerateToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));

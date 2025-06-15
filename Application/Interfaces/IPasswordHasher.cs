@@ -8,7 +8,7 @@ namespace Application.Interfaces;
 
 public interface IPasswordHasher
 {
-    string Hash(string password);
+    string GetHash(string password);
 
     bool Verify(string password, string passwordHash);
 }

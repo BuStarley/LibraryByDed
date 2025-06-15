@@ -1,51 +1,57 @@
-﻿using Application.Exceptions;
+﻿using Application.Dto;
+using Application.Exceptions;
 using Application.Interfaces;
 using Domain.Entity;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Application.Users.Command.Register;
 
 public class RegisterUserCommandHandler(
     IUserRepository repository,
     IPasswordHasher passwordHasher,
-    ILogger<RegisterUserCommandHandler> logger)
-    : IRequestHandler<RegisterUserCommand, Guid>
+    ILogger logger)
+    : IRequestHandler<RegisterUserCommand, AuthenticationResult>
 {
-    public async Task<Guid> Handle(
-        RegisterUserCommand request,
+    public async Task<AuthenticationResult> Handle(
+        RegisterUserCommand request, 
         CancellationToken ct)
     {
         try
         {
-            logger.LogInformation("Starting registration for phone: {PhoneNumber}", request.PhoneNumber);
-
-            if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 8)
+            if (await repository.ExistsByPhoneNumber(request.PhoneNumber, ct))
             {
-                throw new ValidationException("Password must be at least 8 characters long");
+                var message = "The phone number is busy";
+                logger.LogWarning(message);
+                throw new AuthenticationException(message);
             }
 
-            var existingUser = await repository.GetByPhoneNumberAsync(request.PhoneNumber, ct);
-            if (existingUser != null)
-            {
-                throw new ConflictException($"User with phone {request.PhoneNumber} already exists");
-            }
+            var passwordHash = passwordHasher.GetHash(request.Password);
 
             var user = User.Create(
                 request.UserName,
                 request.PhoneNumber,
-                passwordHasher.Hash(request.Password));
+                passwordHash
+                );
 
             await repository.AddAsync(user, ct);
-            logger.LogInformation("User registered successfully with ID: {UserId}", user.Id);
+            logger.LogInformation($"Register new User:" +
+                $" id={user.Id}" +
+                $" name={user.UserName}" +
+                $" number={user.PhoneNumber}");
 
-            return user.Id;
+            return new AuthenticationResult(user.Id, "");
         }
-        catch (Exception ex) when (ex is not ValidationException and not ConflictException)
+        catch ( Exception ex )
         {
-            logger.LogError(ex, "Error during registration for phone: {PhoneNumber}", request.PhoneNumber);
-            throw new RegistrationException("Registration failed", ex);
+            var message = "Connection problems";
+            logger.LogError(message);
+            throw new AuthenticationException(message);
         }
     }
 }
